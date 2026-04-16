@@ -1,4 +1,4 @@
-# Patrik Baleka – Programming Portfolio
+# PatrikB – Programming Portfolio
 
 This repository contains selected examples of my work in software development, system design, and applied algorithms.  
 My focus areas include C++ (evolutionary algorithms, library extensions) and Godot/GDScript (modular game systems).
@@ -41,7 +41,7 @@ All files in this repository are either:
 This section contains **safe, isolated code samples** from my project *ToD: Incremental*.  
 No assets, no proprietary gameplay logic, and no content from *ToD: Exodus / Project Kondela* is included.
 
-### Save/Load Manager (old → new)
+### Save/Load Manager (old example → new - blueprint)
 A refactoring example demonstrating:
 
 - explicit subsystem loading (old version)  

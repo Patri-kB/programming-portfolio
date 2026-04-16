@@ -1,0 +1,34 @@
+// Partially Matched Crossover (PMX)
+template <typename T>
+void PMX(const galgo::Population<T>& x, galgo::CHR<T>& chr1, galgo::CHR<T>& chr2)
+{
+    // Choosing randomly 2 chromosomes from the mating population
+    int idx1 = galgo::uniform<int>(0, x.matsize());
+    int idx2 = galgo::uniform<int>(0, x.matsize());
+
+    // Choosing randomly 2 positions for crossover
+    int pos1 = galgo::uniform<int>(0, chr1->size());
+    int pos2 = galgo::uniform<int>(0, chr1->size());
+
+    // Ordering the two random positions
+    int start = std::min(pos1, pos2);
+    int end = std::max(pos1, pos2);
+
+    // Mapping the corresponding values between the parents
+    std::vector<int> mapping(chr1->size());
+    for (int i = start; i <= end; ++i) {
+        mapping[x[idx1]->getBit(i)] = x[idx2]->getBit(i);
+        mapping[x[idx2]->getBit(i)] = x[idx1]->getBit(i);
+    }
+
+    // Performing crossover
+    for (int i = 0; i < chr1->size(); ++i) {
+        if (i < start || i > end) {
+            chr1->addBit(mapping[x[idx1]->getBit(i)]);
+            chr2->addBit(mapping[x[idx2]->getBit(i)]);
+        } else {
+            chr1->addBit(x[idx2]->getBit(i));
+            chr2->addBit(x[idx1]->getBit(i));
+        }
+    }
+}

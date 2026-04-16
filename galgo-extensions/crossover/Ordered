@@ -1,0 +1,40 @@
+// Ordered crossover
+template <typename T>
+void OX(const galgo::Population<T>& x, galgo::CHR<T>& chr1, galgo::CHR<T>& chr2)
+{
+    // Choosing randomly 2 chromosomes from mating population
+    int idx1 = galgo::uniform<int>(0, x.matsize());
+    int idx2 = galgo::uniform<int>(0, x.matsize());
+
+    // Choosing randomly 2 positions for crossover
+    int pos1 = galgo::uniform<int>(0, chr1->size());
+    int pos2 = galgo::uniform<int>(0, chr1->size());
+
+    // Ordering the two random positions
+    int start = std::min(pos1, pos2);
+    int end = std::max(pos1, pos2);
+
+    // Copying the genes within the selected segment
+    std::vector<bool> copied(chr1->size(), false);
+    for (int i = start; i <= end; ++i) {
+        chr1->setBit(i, x[idx1]->getBit(i));
+        chr2->setBit(i, x[idx2]->getBit(i));
+        copied[x[idx1]->getBit(i)] = true;
+        copied[x[idx2]->getBit(i)] = true;
+    }
+
+    // Forming the outer part of the chromosomes
+    int index1 = (end + 1) % chr1->size();
+    int index2 = (end + 1) % chr1->size();
+    for (int i = 0; i < chr1->size(); ++i) {
+        if (i >= start && i <= end) continue;
+        while (copied[x[idx1]->getBit(index1)]) index1 = (index1 + 1) % chr1->size();
+        while (copied[x[idx2]->getBit(index2)]) index2 = (index2 + 1) % chr1->size();
+        chr1->setBit(i, x[idx1]->getBit(index1));
+        chr2->setBit(i, x[idx2]->getBit(index2));
+        copied[x[idx1]->getBit(index1)] = true;
+        copied[x[idx2]->getBit(index2)] = true;
+        index1 = (index1 + 1) % chr1->size();
+        index2 = (index2 + 1) % chr1->size();
+    }
+}

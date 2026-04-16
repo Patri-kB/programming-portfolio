@@ -1,0 +1,20 @@
+// Even-Odd crossover of 2 chromosomes
+template <typename T>
+void EOX(const galgo::Population<T>& x, galgo::CHR<T>& chr1, galgo::CHR<T>& chr2)
+{
+    // choosing randomly 2 chromosomes from mating population
+    int idx1 = galgo::uniform<int>(0, x.matsize());
+    int idx2 = galgo::uniform<int>(0, x.matsize());
+
+    for (int j = 0; j < chr1->size(); ++j) {
+        // choosing even bits from mother for daughter and from father for son
+        if (j % 2 == 0) {
+            chr1->addBit(x[idx1]->getBit(j));
+            chr2->addBit(x[idx2]->getBit(j));
+        }
+        else { // choosing odd bits from mother for son and from father for daughter
+            chr1->addBit(x[idx2]->getBit(j));
+            chr2->addBit(x[idx1]->getBit(j));
+        }
+    }
+}
